@@ -3,7 +3,6 @@ public class BTree<Key extends Comparable<Key>, Value> {
 	//ORDEN M
 		//Debe ser mayor que dos porque la cantidad m�xima de hijos por cada Nodo es M-1
 	    private static final int M = 4;
-
 	    private Node root;       // raiz
 	    private int height;      // altura
 	    private int n;           // cantidad de nodos (pares clave valor)
@@ -62,7 +61,6 @@ public class BTree<Key extends Comparable<Key>, Value> {
 	        return height;
 	    }
 
-
 	    /**
 	     * Returns the value associated with the given key.
 	     *
@@ -71,21 +69,21 @@ public class BTree<Key extends Comparable<Key>, Value> {
 	     *         and {@code null} if the key is not in the symbol table
 	     * @throws IllegalArgumentException if {@code key} is {@code null}
 	     */
-	    public Value get(Key key) {
+	    public String get(Key key) {
 	        if (key == null) throw new IllegalArgumentException("argument to get() is null");
-	        return search(root, key, height);
+	        return search(root, key, height) ;
 	    }
 
-	    private Value search(Node x, Key key, int ht) {
+	    private String search(Node x, Key key, int ht) {
 	        Entry[] children = x.children;
-
+	        String resp = "";
 	        if (ht == 0) {
 	            for (int j = 0; j < x.m; j++) {
 	                if (eq(key, children[j].key)) 
-	                	return (Value)children[j].val;
+	                	resp = (String)(Value)children[j].val + "  " +resp;
 	            }
+	            return resp;
 	        }
-
 	        else {
 	            for (int j = 0; j < x.m; j++) {
 	                if (j+1 == x.m || less(key, children[j+1].key))

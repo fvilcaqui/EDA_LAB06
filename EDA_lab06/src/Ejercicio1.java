@@ -1,12 +1,15 @@
 
-public class Test {
+public class Ejercicio1 {
+
 	public static void main(String[] args) {
+		
 		BTree<String, String> st = new BTree<String, String>();
 
         st.put("www.cs.princeton.edu", "128.112.136.12");
         st.put("www.cs.princeton.edu", "128.112.136.11");
         st.put("www.princeton.edu",    "128.112.128.15");
         st.put("www.yale.edu",         "130.132.143.21");
+        st.put("www.yale.edu",         "130.132.143.23");
         st.put("www.simpsons.com",     "209.052.165.60");
         st.put("www.apple.com",        "17.112.152.32");
         st.put("www.amazon.com",       "207.171.182.16");
@@ -24,16 +27,14 @@ public class Test {
         System.out.println("A continuacion se obtiene el valor a partir de una llave proporcionada.");
         System.out.println("cs.princeton.edu:  " + st.get("www.cs.princeton.edu"));
         System.out.println("hardvarother.com: " + st.get("www.harvarother.com"));
+        System.out.println("cs.yale.edu:  " + st.get("www.yale.edu"));
         System.out.println("simpsons.com:      " + st.get("www.simpsons.com"));
         System.out.println("apple.com:         " + st.get("www.apple.com"));
         System.out.println("ebay.com:          " + st.get("www.ebay.com"));
         System.out.println("dell.com:          " + st.get("www.dell.com"));
-        System.out.println();
 
-        System.out.println("size:    " + st.size());
-        System.out.println("height:  " + st.height());
-        System.out.println(st);
-        System.out.println();
-        
-    }
+		
+
+	}
+
 }
