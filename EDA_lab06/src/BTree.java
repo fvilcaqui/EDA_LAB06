@@ -1,7 +1,7 @@
 
 public class BTree<Key extends Comparable<Key>, Value> {
 	//ORDEN M
-		//Debe ser mayor que dos porque la cantidad m�xima de hijos por cada Nodo es M-1
+	//Debe ser mayor que dos porque la cantidad m�xima de hijos por cada Nodo es M-1
 	    private static final int M = 4;
 	    private Node root;       // raiz
 	    private int height;      // altura
@@ -11,7 +11,6 @@ public class BTree<Key extends Comparable<Key>, Value> {
 	    private static final class Node {
 	        private int m;                             // numero de claves
 	        private Entry[] children = new Entry[M];   // arreglo de claves, fijense que se crea en base al tamano del orden
-
 	        // creacion de un nodo con k numero de hijos
 	        private Node(int k) {
 	            m = k;
@@ -69,12 +68,34 @@ public class BTree<Key extends Comparable<Key>, Value> {
 	     *         and {@code null} if the key is not in the symbol table
 	     * @throws IllegalArgumentException if {@code key} is {@code null}
 	     */
-	    public String get(Key key) {
+	    public Value get(Key key) {
 	        if (key == null) throw new IllegalArgumentException("argument to get() is null");
-	        return search(root, key, height) ;
+	        return search(root, key, height);
+	    }
+	    
+	    private Value search(Node x, Key key, int ht) {
+	        Entry[] children = x.children;
+	        if (ht == 0) {
+	            for (int j = 0; j < x.m; j++) {
+	                if (eq(key, children[j].key)) 
+	                	return (Value)children[j].val;
+	            }
+	        }
+	        else {
+	            for (int j = 0; j < x.m; j++) {
+	                if (j+1 == x.m || less(key, children[j+1].key))
+	                    return search(children[j].next, key, ht-1);
+	            }
+	        }
+	        return null;
+	    }
+	    
+	    public String getComplete(Key key) {
+	        if (key == null) throw new IllegalArgumentException("argument to get() is null");
+	        return searchComplete(root, key, height);
 	    }
 
-	    private String search(Node x, Key key, int ht) {
+	    private String searchComplete(Node x, Key key, int ht) {
 	        Entry[] children = x.children;
 	        String resp = "";
 	        if (ht == 0) {
@@ -87,12 +108,12 @@ public class BTree<Key extends Comparable<Key>, Value> {
 	        else {
 	            for (int j = 0; j < x.m; j++) {
 	                if (j+1 == x.m || less(key, children[j+1].key))
-	                    return search(children[j].next, key, ht-1);
+	                    return searchComplete(children[j].next, key, ht-1);
 	            }
 	        }
 	        return null;
 	    }
-
+	    
 
 	    /**
 	     * Inserts the key-value pair into the symbol table, overwriting the old value
@@ -109,7 +130,6 @@ public class BTree<Key extends Comparable<Key>, Value> {
 	        Node u = insert(root, key, val, height); 
 	        n++;
 	        if (u == null) return;
-
 	        // fraccionar la raiz
 	        Node t = new Node(2);
 	        t.children[0] = new Entry(root.children[0].key, null, root);
@@ -121,14 +141,12 @@ public class BTree<Key extends Comparable<Key>, Value> {
 	    private Node insert(Node h, Key key, Value val, int ht) {
 	        int j;
 	        Entry t = new Entry(key, val, null);
-
 	        if (ht == 0) {
 	            for (j = 0; j < h.m; j++) {
 	                if (less(key, h.children[j].key)) 
 	                	break;
 	            }
 	        }
-
 	        else {
 	            for (j = 0; j < h.m; j++) {
 	                if ((j+1 == h.m) || less(key, h.children[j+1].key)) {
@@ -142,7 +160,6 @@ public class BTree<Key extends Comparable<Key>, Value> {
 	                }
 	            }
 	        }
-
 	        for (int i = h.m; i > j; i--)
 	            h.children[i] = h.children[i-1];
 	        h.children[j] = t;
@@ -174,7 +191,6 @@ public class BTree<Key extends Comparable<Key>, Value> {
 	    private String toString(Node h, int ht, String indent) {
 	        StringBuilder s = new StringBuilder();
 	        Entry[] children = h.children;
-
 	        if (ht == 0) {
 	            for (int j = 0; j < h.m; j++) {
 	                s.append(indent + children[j].key + " " + children[j].val + "\n");
@@ -190,7 +206,6 @@ public class BTree<Key extends Comparable<Key>, Value> {
 	        return s.toString();
 	    }
 
-
 	    // comparadores
 	    private boolean less(Comparable k1, Comparable k2) {
 	        return k1.compareTo(k2) < 0;
@@ -199,5 +214,39 @@ public class BTree<Key extends Comparable<Key>, Value> {
 	    private boolean eq(Comparable k1, Comparable k2) {
 	        return k1.compareTo(k2) == 0;
 	    }
-
+	    
+	    public void Delete(Key key) {
+	        if (key == null) throw new IllegalArgumentException("argument to get() is null");
+	        else searchDelete(root, key, height);
+	    }
+	    
+	    private void searchDelete(Node x, Key key, int ht) {
+	        Entry[] children = x.children;
+	        Entry guard = null;
+	        if (ht == 0) {
+	            for (int j = 0; j < x.m; j++) {
+	                if (eq(key, children[j].key)) {
+	                	if(children[j].next == null) {
+	                		for (int l = 0; l < x.m-1; l++) {
+	                			children[l]=children[l+1];
+	                		}
+	                	}else {
+	                		guard = children[j];
+	                		int k=0;
+	                			children[j] = children[j].next.children[k];
+	                			children[j].next.children[k] = guard;
+	                		    searchDelete(children[j].next.children[k].next, key, 0);	                			
+	                	}
+	                }
+	            }
+	        }
+	        else {
+	            for (int j = 0; j < x.m; j++) {
+	                if (j+1 == x.m || less(key, children[j+1].key))
+	                    searchDelete(children[j].next, key, ht-1);
+	            }
+	        }
+	    }    
+	    
+	    
 }

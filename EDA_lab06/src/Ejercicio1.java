@@ -25,13 +25,13 @@ public class Ejercicio1 {
         st.put("www.yahoo.com",        "216.109.118.65");
 
         System.out.println("A continuacion se obtiene el valor a partir de una llave proporcionada.");
-        System.out.println("cs.princeton.edu:  " + st.get("www.cs.princeton.edu"));
-        System.out.println("hardvarother.com: " + st.get("www.harvarother.com"));
-        System.out.println("cs.yale.edu:  " + st.get("www.yale.edu"));
-        System.out.println("simpsons.com:      " + st.get("www.simpsons.com"));
-        System.out.println("apple.com:         " + st.get("www.apple.com"));
-        System.out.println("ebay.com:          " + st.get("www.ebay.com"));
-        System.out.println("dell.com:          " + st.get("www.dell.com"));
+        System.out.println("cs.princeton.edu:  " + st.getComplete("www.cs.princeton.edu"));
+        System.out.println("hardvarother.com:  " + st.getComplete("www.harvarother.com"));
+        System.out.println("cs.yale.edu:       " + st.getComplete("www.yale.edu"));
+        System.out.println("simpsons.com:      " + st.getComplete("www.simpsons.com"));
+        System.out.println("apple.com:         " + st.getComplete("www.apple.com"));
+        System.out.println("ebay.com:          " + st.getComplete("www.ebay.com"));
+        System.out.println("dell.com:          " + st.getComplete("www.dell.com"));
 
 		
 
