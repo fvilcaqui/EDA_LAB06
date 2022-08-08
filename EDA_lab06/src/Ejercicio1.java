@@ -4,7 +4,6 @@ public class Ejercicio1 {
 	public static void main(String[] args) {
 		
 		BTree<String, String> st = new BTree<String, String>();
-
         st.put("www.cs.princeton.edu", "128.112.136.12");
         st.put("www.cs.princeton.edu", "128.112.136.11");
         st.put("www.princeton.edu",    "128.112.128.15");
