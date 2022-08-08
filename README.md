@@ -245,3 +245,92 @@ ciertas claves? (4 puntos)
  
       ![image](https://user-images.githubusercontent.com/87882802/183326712-92827b76-acbc-41fb-9e40-693e45ef061c.png)
 
+-   Este es el método put, nos servirá para introducir un valor.
+
+	    public void put(Key key, Value val) {
+
+-   Si la variable key esta vacía enviara el siguiente mensaje a la consola.
+   
+	        if (key == null) 
+	        	throw new IllegalArgumentException("argument key to put() is null");
+			
+-   En caso no se cumpla la anterior condición, llamaremos al método insert para insertar el valor 
+	        
+		Node u = insert(root, key, val, height); 
+	        n++;
+
+-   En caso el método insert devuelva null no se insertará nada.
+
+	        if (u == null) return;
+	        // fraccionar la raíz
+	        Node t = new Node(2);
+	        t.children[0] = new Entry(root.children[0].key, null, root);
+	        t.children[1] = new Entry(u.children[0].key, null, u);
+	        root = t;
+	        height++;
+	    }	
+-   Una vez continue, subirá la altura.
+
+
+
+-   Este es el método Insert para insertar un nuevo valor
+
+	    private Node insert(Node h, Key key, Value val, int ht) {
+	        int j;
+
+-   Utilizaremos el método Entry para ingresar los valores.
+   
+	        Entry t = new Entry(key, val, null);
+
+-   Si la altura del árbol es 0 entonces compararemos la clave ingresada con los valores del árbol. En caso nuestra key sea menor que los h.children[j].key entonces acabara el for.
+   
+	        if (ht == 0) {
+	            for (j = 0; j < h.m; j++) {
+	                if (less(key, h.children[j].key)) 
+	                	break;
+	            }
+	        }
+	        else {
+		
+-   Utilizaremos un for para recorrer los valores de ese nodo. 
+   
+	            for (j = 0; j < h.m; j++) {
+		    
+-   Utilizaremos un if con las condiciones que, si el valor de un número mayor a j es igual a la cantidad de nuestros valores del nodo, y que si, el valor de nuestra key es menor a “children[j+1].key”.      
+                                                                           
+	                if ((j+1 == h.m) || less(key, h.children[j+1].key)) {
+			
+-   Utilizaremos el método insert para hacer iterativo este programa e insertar los valores dentro de un nodo menor. 
+     
+	                    Node u = insert(h.children[j++].next, key, val, ht-1);
+			    
+-   Si el método insert devuelve null nuestro método también devolverá null.
+   
+	                    if (u == null) 
+	                    	return null;
+	                    t.key = u.children[0].key;
+	                    t.val = null;
+	                    t.next = u;
+	                    break;
+	                }
+	            }
+	        }
+		
+-   Utilizaremos un for para rrecorrer todos lo valores del nodo.
+-   Y moveremos los valores un lugar mas a la derecha.
+     
+	        for (int i = h.m; i > j; i--)
+	            h.children[i] = h.children[i-1];
+	        h.children[j] = t;
+	        h.m++;
+		
+-   En caso el tamaño del nodo sea mayor al tamaño maximo establecido dividiremos el nodo usando un Split.
+
+	        if (h.m < M) 
+	        	return null;
+	        else         
+	        	return split(h);
+	    }
+
+
+
